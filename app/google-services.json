@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "802431571219",
+    "project_id": "prvtmsg",
+    "storage_bucket": "prvtmsg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802431571219:android:b491713cb9c5b8c93af6e6",
+        "android_client_info": {
+          "package_name": "com.app.prvtmsg"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7H0KMvgFcFN8kXdkukb7TAbq0oa7HH50"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
