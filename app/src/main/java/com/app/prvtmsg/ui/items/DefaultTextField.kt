@@ -1,4 +1,4 @@
-package com.app.prvtmsg
+package com.app.prvtmsg.ui.items
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight

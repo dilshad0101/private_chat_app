@@ -1,12 +1,9 @@
 package com.app.prvtmsg
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
+import com.app.prvtmsg.ui.screens.Message
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -14,17 +11,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 
-class MessageHandlerViewModel : ViewModel() {
+class MessageHandlerViewModel (channelId: String) : ViewModel() {
     private val db = Firebase.firestore
-    private val messageRef = db.collection("message")
+    private val messageRef = db.collection(channelId)
     var fetchedMessages = mutableStateOf(emptyList<Message>())
     private var listenerRegistration: ListenerRegistration? = null
 
 
-    fun startListeningForMessages() {
+    fun startListeningForMessages(channelId: String) {
         listenerRegistration = messageRef.addSnapshotListener { snapshot, exception ->
             if (exception != null) {
                 // Handle error
@@ -53,6 +48,20 @@ class MessageHandlerViewModel : ViewModel() {
             }
 
             fetchedMessages.value = messageList
+            if (messageList.isEmpty()){
+                CoroutineScope(Dispatchers.IO).launch {
+                    messageRef.add(
+                        hashMapOf(
+                            "content" to "initial_text",
+                            "time" to Timestamp.now(),
+                            "channel" to channelId
+                        )
+                    ).addOnSuccessListener {
+                        this.cancel()
+                    }
+                }
+            }
+
         }
     }
 
